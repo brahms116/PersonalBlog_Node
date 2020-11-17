@@ -6,7 +6,7 @@ const schema = buildSchema(`
     type Query{
         allReaders(opts:PaginationInput):ReadersPage
         getPostById(id:String):Post
-        allPostsByDate(opts:PaginationInput):PostsPage
+        allPostHeadingsByDate(opts:PaginationInput):PostsPage
         getAllPostId:AllId
     }
 
@@ -36,7 +36,7 @@ const schema = buildSchema(`
     type Post implements Response{
         ref:String
         title:String
-        createdAt:Int
+        createdAt:String
         description:String
         src:String
         para:[String!]

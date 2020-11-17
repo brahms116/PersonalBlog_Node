@@ -2,8 +2,7 @@ import Post, { PostInputData } from '../Models/Post'
 import Reader, {ReaderInput} from '../Models/Reader'
 import ReadersCollection from '../Models/ReadersCollection'
 import PostsCollection from '../Models/PostsCollection'
-import {CollectionInput} from '../Models/CollectionInterface'
-import { responsePathAsArray } from 'graphql'
+import {CollectionInput} from '../Models/ModelInterface'
 
 
 class ResponseError{
@@ -63,7 +62,7 @@ export default class Root{
                 return new ResponseError(error)
             }
         },
-        async allPostsByDate({input}:CollectionInput){
+        async allPostHeadingsByDate({input}:CollectionInput){
             try {
                 const page = PostsCollection.createFromData(input?input:{})
                 const res = await page.findPosts()

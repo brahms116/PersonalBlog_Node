@@ -1,11 +1,11 @@
 import Model from '../Abstract/Model'
 import ReftoId from '../utils/ReftoId'
 import Reader,{ReaderResponse} from './Reader'
-import {CollectionCreateData,CollectionResponse} from './CollectionInterface'
+import {CollectionCreateData,CollectionResponse} from './ModelInterface'
 
 
 export interface ReadersCollectionResponse extends CollectionResponse{
-    data:Array<ReaderResponse>
+    data:[string,string][]
 }
 export default class ReadersCollection extends Model{
 
@@ -28,7 +28,7 @@ export default class ReadersCollection extends Model{
     
 
     
-
+    //this function only returns a page of readers, should've implemented like the other posts collection where all the ids could be fetched.
     public async findAll(){
         try {
             
@@ -46,23 +46,20 @@ export default class ReadersCollection extends Model{
                     }
                 }
             }
-            const res:ReadersCollectionResponse = await this._fauna.fclient.query(
-                this._q.Map(
+            const res:ReadersCollectionResponse = await this._fauna.fclient.query(               
                     this._q.Paginate(
-                        this._q.Match("allReaders"),
+                        this._q.Match("all_readers_with_email"),
                         opts
                     ),
-                    this._q.Lambda("x",this._q.Get(this._q.Var("x")))
-                )
             )
-            // console.log(this._cursor)
+            console.log(res)
             if(res.after && res.after![0]!=null){                
                     this._cursor = res.after[0].toString()
                     this._cursor = ReftoId(this._cursor)     
             }
             for(let x of res.data){
-                const cursor = ReftoId(x.ref.toString())
-                 this._collection.push(Reader.createReaderFromData({ref:cursor,email:x.data.email}))
+                const cursor = ReftoId(x[1].toString())
+                 this._collection.push(Reader.createReaderFromData({ref:cursor,email:x[0]}))
             }
             if(res.before){
                 this._cursor="LP"

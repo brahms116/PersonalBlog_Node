@@ -1,10 +1,10 @@
 import Model from "../Abstract/Model";
-import {CollectionResponse, CollectionCreateData } from "./CollectionInterface";
+import {CollectionResponse, CollectionCreateData } from "./ModelInterface";
 import Post, {PostResponse} from './Post'
 import ReftoId from '../utils/ReftoId'
 
 interface PostsCollectionResponse extends CollectionResponse{
-    data:PostResponse[]
+    data:[number,string,string,string][]
 }
 export default class PostsCollection extends Model{
 
@@ -28,23 +28,20 @@ export default class PostsCollection extends Model{
         let result:string[] = []
         try {
             while(isthereMore){
-                const res:PostsCollectionResponse = await this._fauna.fclient.query(
-                    this._q.Map(
+                const res:PostsCollectionResponse = await this._fauna.fclient.query(                    
                         this._q.Paginate(
-                            this._q.Match("allPosts"),
+                            this._q.Match("Posts_by_date"),
                             tempAfter?{after:[this._q.Ref(this._q.Collection("Post"),tempAfter)]}:{}
-                        ),
-                        this._q.Lambda("x",this._q.Get(this._q.Var("x")))
-                    )
+                        )
                 )
-                // console.log(res)
+                console.log(res)
                 if(!res.after){
                     isthereMore=false
                 }else{
                     tempAfter=ReftoId(res.after.toString())
                 }
                 for(let x of res.data){
-                    result.push(ReftoId(x.ref.toString()))
+                    result.push(ReftoId(x[3].toString()))
                 }
             }
             return result
@@ -71,28 +68,36 @@ export default class PostsCollection extends Model{
                     }
                 }
             }
+            // const res:PostsCollectionResponse = await this._fauna.fclient.query(
+            //     this._q.Map(
+            //         this._q.Paginate(
+            //             this._q.Match("Posts_by_date"),
+            //             opts
+            //         ),
+            //         this._q.Lambda(["data","x"],this._q.Get(this._q.Var("x")))
+            //     )
+            // )
             const res:PostsCollectionResponse = await this._fauna.fclient.query(
-                this._q.Map(
+               
                     this._q.Paginate(
                         this._q.Match("Posts_by_date"),
                         opts
-                    ),
-                    this._q.Lambda(["data","x"],this._q.Get(this._q.Var("x")))
-                )
+                    )
+                
             )
-            // console.log(res)
+            //console.log(res)
             if(res.after && res.after![0]!=null){                
                     this._cursor = res.after[0].toString()
                     this._cursor = ReftoId(this._cursor)     
             }
             for(let x of res.data){
-                const cursor = ReftoId(x.ref.toString())
-                this._collection.push(Post.createFromData({ref:cursor,...x.data}))
+                const cursor = ReftoId(x[3].toString())
+                this._collection.push(Post.createFromData({ref:cursor,createdAt:x[0],title:x[1],description:x[2]}))
             }
             if(res.before){
                 this._cursor="LP"
             }
-            console.log(this._collection)
+            // console.log(this._collection)
         } catch (error) {
             console.log(error)
             throw error.toString()

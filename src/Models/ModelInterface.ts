@@ -11,6 +11,10 @@ export interface CollectionCreateData{
     size?:number
 }
 
+export interface graphQLData{
+    ref?:string
+}
+
 export interface CollectionResponse{
     after?:string[],
     before?:string[],

@@ -1,19 +1,21 @@
 import Model from "../Abstract/Model";
 import ReftoId from "../utils/ReftoId";
+import { graphQLData } from "./ModelInterface";
 
 export interface ReaderInput{
    email:string
 }
 
-interface ReaderCreateData{
-    email?:string;
-    ref?:string;
+interface dbReaderData{
+    email?:string
 }
+
+interface ReaderCreateData extends dbReaderData,graphQLData{}
 
 export interface ReaderResponse{
     ref:string
     ts:number
-    data:any
+    data:dbReaderData
 }
 
 

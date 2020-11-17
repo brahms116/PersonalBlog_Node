@@ -1,6 +1,6 @@
 import Model from "../Abstract/Model";
 import ReftoId from "../utils/ReftoId";
-
+import {graphQLData} from './ModelInterface'
 
 type stringorundefined = string | undefined
 
@@ -11,8 +11,7 @@ export interface PostInputData{
 
 // created at has to be in iso 8601??
 
-export interface createPostData {
-    ref?:string
+export interface dbPostData{
     title?:string
     description?:string
     createdAt?:number
@@ -20,10 +19,12 @@ export interface createPostData {
     para?:string[]
 }
 
+export interface createPostData extends dbPostData, graphQLData{}
+
 export interface PostResponse{
     ref:string
     ts:number
-    data:createPostData  //except for the ref i can't be bothered fixing it
+    data:dbPostData  
 }
 
 export default class Post extends Model{
@@ -38,7 +39,7 @@ export default class Post extends Model{
             title:this._title,
             ref:this._ref,
             description:this._description,
-            createdAt:this._createdAt,
+            createdAt:this._createdAt?.toString(),
             src:this._src,
             para:this._para
         }
@@ -63,7 +64,7 @@ export default class Post extends Model{
                         data:{
                             title:this._title,
                             description:this._description,
-                            createAt:this._createdAt,
+                            createdAt:this._createdAt,
                             src:this._src,
                             para:this._para
                         }
@@ -71,7 +72,7 @@ export default class Post extends Model{
                 )
             )
             this._ref=ReftoId(res.ref.toString())
-            // console.log(res)
+            console.log(res)
         } catch (error) {
             console.log(error)
             throw error.toString()
