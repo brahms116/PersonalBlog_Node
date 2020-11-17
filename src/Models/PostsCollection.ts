@@ -22,6 +22,38 @@ export default class PostsCollection extends Model{
         }
     }
 
+    public async getAllId(){
+        let isthereMore = true
+        let tempAfter = null
+        let result:string[] = []
+        try {
+            while(isthereMore){
+                const res:PostsCollectionResponse = await this._fauna.fclient.query(
+                    this._q.Map(
+                        this._q.Paginate(
+                            this._q.Match("allPosts"),
+                            tempAfter?{after:[this._q.Ref(this._q.Collection("Post"),tempAfter)]}:{}
+                        ),
+                        this._q.Lambda("x",this._q.Get(this._q.Var("x")))
+                    )
+                )
+                // console.log(res)
+                if(!res.after){
+                    isthereMore=false
+                }else{
+                    tempAfter=ReftoId(res.after.toString())
+                }
+                for(let x of res.data){
+                    result.push(ReftoId(x.ref.toString()))
+                }
+            }
+            return result
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+
     public async findPosts(){
         try {
             

@@ -25,6 +25,10 @@ export default class ReadersCollection extends Model{
         super()
     }
 
+    
+
+    
+
     public async findAll(){
         try {
             
@@ -51,7 +55,7 @@ export default class ReadersCollection extends Model{
                     this._q.Lambda("x",this._q.Get(this._q.Var("x")))
                 )
             )
-            // console.log(this._curso)
+            // console.log(this._cursor)
             if(res.after && res.after![0]!=null){                
                     this._cursor = res.after[0].toString()
                     this._cursor = ReftoId(this._cursor)     

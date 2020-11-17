@@ -86,6 +86,22 @@ export default class Reader extends Model{
 
     }
 
+    public async delete(){
+        try {
+           await this.findByEmail()
+           await this._fauna.fclient.query(
+               this._q.Delete(
+                   this._q.Ref(this._q.Collection("Reader"),this._ref)
+               )
+            )
+            return this
+
+        } catch (error) {
+            console.log(error)
+            throw error.toString()
+        }
+    }
+
     
 }
 

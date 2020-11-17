@@ -3,6 +3,7 @@ import Reader, {ReaderInput} from '../Models/Reader'
 import ReadersCollection from '../Models/ReadersCollection'
 import PostsCollection from '../Models/PostsCollection'
 import {CollectionInput} from '../Models/CollectionInterface'
+import { responsePathAsArray } from 'graphql'
 
 
 class ResponseError{
@@ -72,6 +73,28 @@ export default class Root{
                 return new ResponseError(error)
             }
 
+        },
+        async deleteReader(input:{email:string}){
+            try{
+                const reader = Reader.createReaderFromData({email:input.email})
+                const res = await reader.delete()
+                return res.data
+            }catch(err){
+                console.log(err)
+                return new ResponseError(err)
+            }
+        },
+        async getAllPostId(){
+            try {
+                const collection = PostsCollection.createFromData({})
+                const res = await collection.getAllId()
+                return {
+                    ids:res
+                }
+            } catch (err) {
+                console.log(err)
+                return new ResponseError(err)
+            }
         }
 
     }

@@ -7,6 +7,7 @@ const schema = buildSchema(`
         allReaders(opts:PaginationInput):ReadersPage
         getPostById(id:String):Post
         allPostsByDate(opts:PaginationInput):PostsPage
+        getAllPostId:AllId
     }
 
 
@@ -24,6 +25,12 @@ const schema = buildSchema(`
     interface Response {
         isError:Boolean
         msg:String
+    }
+
+    type AllId implements Response{
+        isError:Boolean
+        msg:String
+        ids:[String!]
     }
 
     type Post implements Response{

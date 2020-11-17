@@ -17,7 +17,7 @@ export default class Graphql extends Middleware{
         this._app.use("/graphql",graphqlHTTP({
             schema:schema,
             rootValue: this._roots.root,
-            graphiql:true
+            graphiql:process.env.NODE_ENV==='development'
         }))
         
     }
