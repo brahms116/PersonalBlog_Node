@@ -89,14 +89,14 @@ export default class PostsCollection extends Model{
             if(res.after && res.after![0]!=null){                
                     this._cursor = res.after[0].toString()
                     this._cursor = ReftoId(this._cursor)     
+            }else{
+                this._cursor="LP"
             }
             for(let x of res.data){
                 const cursor = ReftoId(x[3].toString())
                 this._collection.push(Post.createFromData({ref:cursor,createdAt:x[0],title:x[1],description:x[2]}))
             }
-            if(res.before){
-                this._cursor="LP"
-            }
+            
             // console.log(this._collection)
         } catch (error) {
             console.log(error)

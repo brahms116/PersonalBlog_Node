@@ -52,18 +52,18 @@ export default class ReadersCollection extends Model{
                         opts
                     ),
             )
-            console.log(res)
+            //console.log(res)
             if(res.after && res.after![0]!=null){                
                     this._cursor = res.after[0].toString()
                     this._cursor = ReftoId(this._cursor)     
+            }else{
+                this._cursor="LP"
             }
             for(let x of res.data){
                 const cursor = ReftoId(x[1].toString())
                  this._collection.push(Reader.createReaderFromData({ref:cursor,email:x[0]}))
             }
-            if(res.before){
-                this._cursor="LP"
-            }
+            
         } catch (error) {
             console.log(error)
             throw error.toString()
