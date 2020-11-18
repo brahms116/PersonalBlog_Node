@@ -9,6 +9,7 @@ interface PostsCollectionResponse extends CollectionResponse{
 export default class PostsCollection extends Model{
 
     static createFromData(data:CollectionCreateData){
+
         return new PostsCollection(data.size,data.cursor)
     }
     public constructor(private _size:number|undefined,private _cursor:string|undefined){
@@ -54,6 +55,7 @@ export default class PostsCollection extends Model{
     public async findPosts(){
         try {
             
+            
             let opts ={}
             if(this._size){
                 if(this._cursor){
@@ -85,9 +87,9 @@ export default class PostsCollection extends Model{
                     )
                 
             )
-            //console.log(res)
-            if(res.after && res.after![0]!=null){                
-                    this._cursor = res.after[0].toString()
+            console.log(res)
+            if(res.after && res.after![4]!=null){                
+                    this._cursor = res.after[4].toString()
                     this._cursor = ReftoId(this._cursor)     
             }else{
                 this._cursor="LP"

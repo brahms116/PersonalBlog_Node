@@ -27,10 +27,10 @@ export default class Root{
                 return new ResponseError(error)
             }
         },
-        async allReaders({input}:CollectionInput){
+        async allReaders({opts}:CollectionInput){
             // console.log(input)  
             try {
-                const page = ReadersCollection.createFromData(input?input:{})
+                const page = ReadersCollection.createFromData(opts?opts:{})
                 const res = await page.findAll()
                 return res.data
             } catch (error) {
@@ -62,9 +62,10 @@ export default class Root{
                 return new ResponseError(error)
             }
         },
-        async allPostHeadingsByDate({input}:CollectionInput){
+        async allPostHeadingsByDate({opts}:CollectionInput){
+            // console.log(opts)
             try {
-                const page = PostsCollection.createFromData(input?input:{})
+                const page = PostsCollection.createFromData(opts?opts:{})
                 const res = await page.findPosts()
                 return res.data
             } catch (error) {

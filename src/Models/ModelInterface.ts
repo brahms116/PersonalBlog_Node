@@ -1,5 +1,5 @@
 export interface CollectionInput{
-    input:{
+    opts:{
         size?:number
         cursor?:string
     }

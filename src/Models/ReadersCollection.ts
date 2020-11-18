@@ -52,9 +52,9 @@ export default class ReadersCollection extends Model{
                         opts
                     ),
             )
-            //console.log(res)
-            if(res.after && res.after![0]!=null){                
-                    this._cursor = res.after[0].toString()
+            console.log(res)
+            if(res.after && res.after![3]!=null){                
+                    this._cursor = res.after[3].toString()
                     this._cursor = ReftoId(this._cursor)     
             }else{
                 this._cursor="LP"
