@@ -37,7 +37,7 @@ export default class Post extends Model{
     public get data(){
         return{
             title:this._title,
-            ref:this._ref,
+            id:this._ref,
             description:this._description,
             createdAt:this._createdAt?.toString(),
             src:this._src,

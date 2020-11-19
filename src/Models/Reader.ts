@@ -29,7 +29,7 @@ export default class Reader extends Model{
     public get data() {
         return{
             email:this._email,
-            ref:this._ref
+            id:this._ref
         }
     }
 

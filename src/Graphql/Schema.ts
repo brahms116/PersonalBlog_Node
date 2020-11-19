@@ -34,7 +34,7 @@ const schema = buildSchema(`
     }
 
     type Post implements Response{
-        ref:String
+        id:String
         title:String
         createdAt:String
         description:String
@@ -59,7 +59,7 @@ const schema = buildSchema(`
     }
 
     type Reader implements Response{
-        ref:String
+        id:String
         email:String
         isError:Boolean
         msg:String
