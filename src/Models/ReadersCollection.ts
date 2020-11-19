@@ -37,7 +37,7 @@ export default class ReadersCollection extends Model{
                 if(this._cursor){
                     opts={
                         size:this._size,
-                        after:[this._q.Ref(this._q.Collection("Reader"),this._cursor)]
+                        after:[this._cursor]
                     }
                 }   
                 else{
@@ -53,15 +53,14 @@ export default class ReadersCollection extends Model{
                     ),
             )
             console.log(res)
-            if(res.after && res.after![3]!=null){                
-                    this._cursor = res.after[3].toString()
-                    this._cursor = ReftoId(this._cursor)     
+            if(res.after){                
+                    this._cursor = res.after[0]    
             }else{
                 this._cursor="LP"
             }
             for(let x of res.data){
                 const cursor = ReftoId(x[1].toString())
-                 this._collection.push(Reader.createReaderFromData({ref:cursor,email:x[0]}))
+                this._collection.push(Reader.createReaderFromData({ref:cursor,email:x[0]}))
             }
             
         } catch (error) {

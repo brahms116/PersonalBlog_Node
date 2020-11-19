@@ -4,10 +4,10 @@ const schema = buildSchema(`
   
 
     type Query{
-        allReaders(opts:PaginationInput):ReadersPage
+        getReaders(opts:PaginationInput):ReadersPage
         getPostById(id:String):Post
-        allPostHeadingsByDate(opts:PaginationInput):PostsPage
-        getAllPostId:AllId
+        getPostHeadingsByDate(opts:PaginationInput):PostsPage
+        AllPostId:AllId
     }
 
 

@@ -27,7 +27,7 @@ export default class Root{
                 return new ResponseError(error)
             }
         },
-        async allReaders({opts}:CollectionInput){
+        async getReaders({opts}:CollectionInput){
             // console.log(input)  
             try {
                 const page = ReadersCollection.createFromData(opts?opts:{})
@@ -62,7 +62,7 @@ export default class Root{
                 return new ResponseError(error)
             }
         },
-        async allPostHeadingsByDate({opts}:CollectionInput){
+        async getPostHeadingsByDate({opts}:CollectionInput){
             // console.log(opts)
             try {
                 const page = PostsCollection.createFromData(opts?opts:{})
@@ -84,7 +84,7 @@ export default class Root{
                 return new ResponseError(err)
             }
         },
-        async getAllPostId(){
+        async AllPostId(){
             try {
                 const collection = PostsCollection.createFromData({})
                 const res = await collection.getAllId()

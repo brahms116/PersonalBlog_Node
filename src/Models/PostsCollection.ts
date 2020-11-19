@@ -32,14 +32,14 @@ export default class PostsCollection extends Model{
                 const res:PostsCollectionResponse = await this._fauna.fclient.query(                    
                         this._q.Paginate(
                             this._q.Match("Posts_by_date"),
-                            tempAfter?{after:[this._q.Ref(this._q.Collection("Post"),tempAfter)]}:{}
+                            tempAfter?{after:[tempAfter]}:{}
                         )
                 )
-                console.log(res)
+                //console.log(res)
                 if(!res.after){
                     isthereMore=false
                 }else{
-                    tempAfter=ReftoId(res.after.toString())
+                    tempAfter=res.after[0];
                 }
                 for(let x of res.data){
                     result.push(ReftoId(x[3].toString()))
@@ -55,14 +55,17 @@ export default class PostsCollection extends Model{
     public async findPosts(){
         try {
             
+            //console.log(this._cursor)
             
             let opts ={}
             if(this._size){
                 if(this._cursor){
+                    //console.log(this._cursor)
                     opts={
                         size:this._size,
-                        after:[this._q.Ref(this._q.Collection("Post"),this._cursor)]
+                        after:[this._cursor]
                     }
+
                 }   
                 else{
                     opts = {
@@ -70,15 +73,7 @@ export default class PostsCollection extends Model{
                     }
                 }
             }
-            // const res:PostsCollectionResponse = await this._fauna.fclient.query(
-            //     this._q.Map(
-            //         this._q.Paginate(
-            //             this._q.Match("Posts_by_date"),
-            //             opts
-            //         ),
-            //         this._q.Lambda(["data","x"],this._q.Get(this._q.Var("x")))
-            //     )
-            // )
+
             const res:PostsCollectionResponse = await this._fauna.fclient.query(
                
                     this._q.Paginate(
@@ -87,10 +82,8 @@ export default class PostsCollection extends Model{
                     )
                 
             )
-            console.log(res)
-            if(res.after && res.after![4]!=null){                
-                    this._cursor = res.after[4].toString()
-                    this._cursor = ReftoId(this._cursor)     
+            if(res.after){                
+                    this._cursor = res.after[0] 
             }else{
                 this._cursor="LP"
             }
@@ -99,7 +92,6 @@ export default class PostsCollection extends Model{
                 this._collection.push(Post.createFromData({ref:cursor,createdAt:x[0],title:x[1],description:x[2]}))
             }
             
-            // console.log(this._collection)
         } catch (error) {
             console.log(error)
             throw error.toString()
