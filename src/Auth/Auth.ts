@@ -13,6 +13,7 @@ export default class Auth{
     private _setup(){
         this._app.use('*',(req,res,next)=>{
             const bearerToken = req.header("Authorization")
+            // console.log(bearerToken)
             if(bearerToken){
                 const token = bearerToken.replace(/Bearer\s/,'')
                 // console.log(token)

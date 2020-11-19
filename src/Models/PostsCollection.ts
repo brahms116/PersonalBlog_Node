@@ -60,10 +60,10 @@ export default class PostsCollection extends Model{
             let opts ={}
             if(this._size){
                 if(this._cursor){
-                    //console.log(this._cursor)
+                    // console.log(this._cursor)
                     opts={
                         size:this._size,
-                        after:[this._cursor]
+                        after:+this._cursor
                     }
 
                 }   
@@ -73,6 +73,7 @@ export default class PostsCollection extends Model{
                     }
                 }
             }
+            // console.log(opts)
 
             const res:PostsCollectionResponse = await this._fauna.fclient.query(
                
