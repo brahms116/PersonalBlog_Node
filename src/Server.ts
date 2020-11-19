@@ -1,10 +1,11 @@
 import express from "express"
-
+import cors from 'cors'
 class Server{
     
     public constructor(port:number){
         this._app = express()
         this._port=port
+        this._app.use(cors())
     }  
     public get expressApp(){
         return this._app
