@@ -1,6 +1,8 @@
 import Model from "../Abstract/Model";
 import ReftoId from "../utils/ReftoId";
 import { graphQLData } from "./ModelInterface";
+import fetch from 'node-fetch'
+
 
 export interface ReaderInput{
    email:string
@@ -73,7 +75,23 @@ export default class Reader extends Model{
                            }
                        )
                    )
-                   this._ref =ReftoId( res.ref.toString())
+                    this._ref =ReftoId( res.ref.toString())
+                    if(process.env.ADMIN_ADDRESS){
+                    
+                    const gmailRes = await fetch(process.env.ADMIN_ADDRESS+'/google/blog/newsub',{
+                        method:'POST',
+                        body:`{"emails":["${this._email}"]}`,
+                        headers:{
+                            'Content-Type':'application/json',
+                            'Authorization':`Bearer ${process.env.ADMIN_SECRET!}`
+                        }
+                    })
+                    console.log(gmailRes)
+                    }
+                    else{
+                        throw 'env not set'
+                    }
+            
                 }
                 else{
                     console.log(error)

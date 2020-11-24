@@ -27,10 +27,10 @@ export default class Root{
                 return new ResponseError(error)
             }
         },
-        async getReaders({opts}:CollectionInput){
+        async AllReaders(){
             // console.log(input)  
             try {
-                const page = ReadersCollection.createFromData(opts?opts:{})
+                const page = ReadersCollection.createFromData({})
                 const res = await page.findAll()
                 return res.data
             } catch (error) {

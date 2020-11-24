@@ -32,35 +32,27 @@ export default class ReadersCollection extends Model{
     public async findAll(){
         try {
             
-            let opts ={}
-            if(this._size){
-                if(this._cursor){
-                    opts={
-                        size:this._size,
-                        after:[this._cursor]
-                    }
-                }   
-                else{
-                    opts = {
-                        size:this._size
-                    }
+
+            const tempAfter = null
+            let isThereMore = true
+            while(isThereMore){
+                const res:ReadersCollectionResponse = await this._fauna.fclient.query(               
+                        this._q.Paginate(
+                            this._q.Match("all_readers_with_email"),
+                            tempAfter?{after:tempAfter}:{}
+                        ),
+                )
+                console.log(res)
+                if(!res.after){
+                    isThereMore = false                
                 }
-            }
-            const res:ReadersCollectionResponse = await this._fauna.fclient.query(               
-                    this._q.Paginate(
-                        this._q.Match("all_readers_with_email"),
-                        opts
-                    ),
-            )
-            console.log(res)
-            if(res.after){                
+                else{
                     this._cursor = res.after[0]    
-            }else{
-                this._cursor="LP"
-            }
-            for(let x of res.data){
-                const cursor = ReftoId(x[1].toString())
-                this._collection.push(Reader.createReaderFromData({ref:cursor,email:x[0]}))
+                }
+                for(let x of res.data){
+                    const cursor = ReftoId(x[1].toString())
+                    this._collection.push(Reader.createReaderFromData({ref:cursor,email:x[0]}))
+                }
             }
             
         } catch (error) {

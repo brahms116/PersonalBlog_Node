@@ -4,7 +4,7 @@ const schema = buildSchema(`
   
 
     type Query{
-        getReaders(opts:PaginationInput):ReadersPage
+        AllReaders:ReadersPage
         getPostById(id:String):Post
         getPostHeadingsByDate(opts:PaginationInput):PostsPage
         AllPostId:AllId
@@ -52,7 +52,6 @@ const schema = buildSchema(`
     }
 
     type ReadersPage implements Response{
-        cursor:String
         isError:Boolean
         msg:String
         readers:[Reader!]
