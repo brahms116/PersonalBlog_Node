@@ -21,6 +21,21 @@ export default class Root{
             try {
                 const reader = Reader.createReaderFromData({email:input.email})
                 const res = await reader.create()
+                if(process.env.ADMIN_ADDRESS){
+                    
+                    const gmailRes = await fetch(process.env.ADMIN_ADDRESS+'/google/blog/newsub',{
+                        method:'POST',
+                        body:`{"emails":["${res.data.email}"]}`,
+                        headers:{
+                            'Content-Type':'application/json',
+                            'Authorization':`Bearer ${process.env.ADMIN_SECRET!}`
+                        }
+                    })
+                    console.log(gmailRes)
+                    }
+                    else{
+                        throw 'env not set'
+                    }
                 return res.data
             } catch (error) {
                 console.log(error)
@@ -32,6 +47,7 @@ export default class Root{
             try {
                 const page = ReadersCollection.createFromData({})
                 const res = await page.findAll()
+
                 return res.data
             } catch (error) {
                 console.log(error)
