@@ -3,7 +3,7 @@ import Reader, {ReaderInput} from '../Models/Reader'
 import ReadersCollection from '../Models/ReadersCollection'
 import PostsCollection from '../Models/PostsCollection'
 import {CollectionInput} from '../Models/ModelInterface'
-
+import fetch from 'node-fetch'
 
 class ResponseError{
     public isError=true;

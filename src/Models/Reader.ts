@@ -1,7 +1,6 @@
 import Model from "../Abstract/Model";
 import ReftoId from "../utils/ReftoId";
 import { graphQLData } from "./ModelInterface";
-import fetch from 'node-fetch'
 
 
 export interface ReaderInput{
