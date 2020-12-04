@@ -1,0 +1,10 @@
+TITLE:Reflections on Romans 4
+DESCRIPTION:Just my thoughts on what really happened
+SRC:randomwebsiteimagelink
+
+Paragraph one its "so grood"
+
+{going to put some script in here?}
+
+Third paragraph just for testing and good measure. 
+I think i need a better interface for building the json files haha.

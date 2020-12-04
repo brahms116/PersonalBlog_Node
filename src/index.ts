@@ -1,16 +1,13 @@
+import dotenv from "dotenv";
+import Server from "./Server";
+import Graphql from "./Graphql/Graphql";
+import Auth from "./Auth/Auth";
+import Rest from "./Rest/Rest";
+dotenv.config();
 
-import dotenv from 'dotenv'
-import Server from './Server'
-import Graphql from './Graphql/Graphql'
-import Auth from './Auth/Auth'
-dotenv.config()
+const server = new Server(+process.env.PORT!);
+new Auth(server);
+new Graphql(server);
+new Rest(server);
 
-const server = new Server(+process.env.PORT!)
-const auth = new Auth(server)
-const graphql = new Graphql(server)
-
-
-
-server.startServer()
-
-
+server.startServer();
