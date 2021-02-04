@@ -1,4 +1,4 @@
-import {buildSchema} from 'graphql'
+import { buildSchema } from "graphql";
 
 const schema = buildSchema(`
   
@@ -13,7 +13,7 @@ const schema = buildSchema(`
 
     type Mutation{
         createReader(email:String!):Reader
-        deleteReader(email:String!):Reader
+        deleteReader(id:String!):Reader
         createPost(input:PostInput):Post
     }
 
@@ -74,8 +74,6 @@ const schema = buildSchema(`
     
 
 
-`)
+`);
 
-
-
-export default schema
+export default schema;
