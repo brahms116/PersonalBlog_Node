@@ -5,7 +5,7 @@ import PostsCollection from "../Models/PostsCollection";
 import { CollectionInput } from "../Models/ModelInterface";
 import fetch from "node-fetch";
 
-class ResponseError {
+export class ResponseError {
     public isError = true;
     public constructor(public msg: string) {}
 }
@@ -26,7 +26,10 @@ export default class Root {
                         process.env.ADMIN_ADDRESS + "/google/blog/newsub",
                         {
                             method: "POST",
-                            body: `{"emails":["${res.data.email}"]}`,
+                            body: JSON.stringify({
+                                email: res.data.email,
+                                id: res.data.id,
+                            }),
                             headers: {
                                 "Content-Type": "application/json",
                                 Authorization: `Bearer ${process.env
@@ -34,7 +37,7 @@ export default class Root {
                             },
                         }
                     );
-                    console.log(gmailRes);
+                    //console.log(gmailRes);
                 } else {
                     throw "env not set";
                 }
